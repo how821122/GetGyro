@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      
+    </style>
+  </head>
+ <body>
+  
+  alpha:<p id="alpha"></p><br />
+  beta:<p id="beta"></p><br />
+  gamma:<p id="gamma"></p><br />
+ 
+  </body>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+  
+ var socket = io();
+ 
+
+ $(document).ready(function(){
+   
+   
+
+   setInterval(function X(){
+
+      var alpha = $("#alpha").text() ; 
+      var beta = $("#beta").text() ;
+      var gamma = $("#gamma").text() ;
+
+      $("#alpha").ready(function(){
+        socket.emit('device',{alpha,beta,gamma});
+      });
+  },1000)//when the alpha is ready, send  #alpha #beta #gamma 's value to server  per 1 second
+})
+</script>
+
+</html>
+
+
+<script>
+  if(window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(event) {
+      var a = document.getElementById('alpha'),
+          b = document.getElementById('beta'),
+          g = document.getElementById('gamma'),
+          
+          alpha = event.alpha,
+          beta = event.beta,
+          gamma = event.gamma;
+      
+      a.innerHTML = Math.round(alpha);
+      b.innerHTML = Math.round(beta);
+      g.innerHTML = Math.round(gamma);
+          
+    }, false);
+  }else{
+    document.querySelector('body').innerHTML = '你的瀏覽器不支援喔';
+  }
+</script>
+
+ <script>
+
+ 
+</script>
+ 
