@@ -1,0 +1,23 @@
+{
+  "name": "getgyro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gyro.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/how821122/GetGyro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies":{
+    "socket.io":"2.0.3",
+    "express":"4.15.4"
+  },
+  "bugs": {
+    "url": "https://github.com/how821122/GetGyro/issues"
+  },
+  "homepage": "https://github.com/how821122/GetGyro#readme"
+}
