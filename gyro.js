@@ -12,10 +12,11 @@ io.on('connection', function(socket){
 	console.log("Connecting.....");
     
     socket.on('device', function(obj){
-    console.log("alpha:"+ obj.alpha+"  beta:"+obj.beta+"  gamma:"+obj.gamma);
-  });
+     console.log("accelerationX:"+ obj.accelerationX+"  accelerationY:"+obj.accelerationY+"  accelerationZ:"+obj.accelerationZ);
+     console.log("alpha:"+ obj.alpha+"  beta:"+obj.beta+"  gamma:"+obj.gamma);
+     console.log("==================================================================================");
 
- 
+  });
 
     socket.on('disconnect', function(){
     console.log('Disconnected');
@@ -26,4 +27,3 @@ io.on('connection', function(socket){
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
-

@@ -1,19 +1,45 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      
-    </style>
-  </head>
- <body>
-  
-  alpha:<p id="alpha"></p><br />
-  beta:<p id="beta"></p><br />
-  gamma:<p id="gamma"></p><br />
- 
-  </body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Accelerometer Javascript Test</title>
+<meta name="viewport" content="width=device-width,user-scalable=yes" />
+<style>
 
+</style>
+</head>
+
+<body>
+
+  
+<ul>
+  <li>acceleration x: <span id="accelerationX"></span>g</li>
+  <li>acceleration y: <span id="accelerationY"></span>g</li>
+  <li>acceleration z: <span id="accelerationZ"></span>g</li>
+  <li>alpha: <span id="alpha"> </p> </li>
+  <li>beta:  <span id="beta">   </p> </li>
+  <li>gamma: <span id="gamma"> </p> </li>
+   
+</ul>
+
+<script type="text/javascript">
+ 
+ 
+if (window.DeviceMotionEvent != undefined) {
+   
+    window.ondevicemotion = function(e) {
+    document.getElementById("accelerationX").innerHTML = Math.round(e.accelerationIncludingGravity.x);
+    document.getElementById("accelerationY").innerHTML = Math.round(e.accelerationIncludingGravity.y);
+    document.getElementById("accelerationZ").innerHTML = Math.round(e.accelerationIncludingGravity.z);
+  }
+  
+   window.ondeviceorientation = function(event) {
+          document.getElementById("alpha").innerHTML = Math.round(event.alpha);
+          document.getElementById("beta").innerHTML = Math.round(event.beta);
+          document.getElementById("gamma").innerHTML = Math.round(event.gamma);
+        }       
+} 
+
+</script>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -21,50 +47,30 @@
   
  var socket = io();
  
-
  $(document).ready(function(){
    
-   
-
    setInterval(function X(){
+
+      var accelerationX = $("#accelerationX").text() ; 
+      var accelerationY = $("#accelerationY").text() ;
+      var accelerationZ = $("#accelerationZ").text() ;
+
 
       var alpha = $("#alpha").text() ; 
       var beta = $("#beta").text() ;
       var gamma = $("#gamma").text() ;
 
-      $("#alpha").ready(function(){
-        socket.emit('device',{alpha,beta,gamma});
+
+      var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma} ;
+
+      $("#accelerationX").ready(function(){
+        socket.emit('device',obj);
       });
-  },1000)//when the alpha is ready, send  #alpha #beta #gamma 's value to server  per 1 second
+  },1000)
+ 
 })
 </script>
 
+
+</body>
 </html>
-
-
-<script>
-  if(window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', function(event) {
-      var a = document.getElementById('alpha'),
-          b = document.getElementById('beta'),
-          g = document.getElementById('gamma'),
-          
-          alpha = event.alpha,
-          beta = event.beta,
-          gamma = event.gamma;
-      
-      a.innerHTML = Math.round(alpha);
-      b.innerHTML = Math.round(beta);
-      g.innerHTML = Math.round(gamma);
-          
-    }, false);
-  }else{
-    document.querySelector('body').innerHTML = '你的瀏覽器不支援喔';
-  }
-</script>
-
- <script>
-
- 
-</script>
- 
