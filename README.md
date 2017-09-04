@@ -1,5 +1,5 @@
 # GetGyro
-use nodejs + html to get Gyro 
+Use nodejs + html to get Gyro 
 
 
 1. install nodejs
