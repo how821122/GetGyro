@@ -18,12 +18,21 @@
   <li>alpha: <span id="alpha"> </p> </li>
   <li>beta:  <span id="beta">   </p> </li>
   <li>gamma: <span id="gamma"> </p> </li>
+
+  <li>year: <span id="year"> </p> </li>
+  <li>month: <span id="month"> </p> </li>
+  <li>date: <span id="date"> </p> </li>
+  <li>hours: <span id="hours"> </p> </li>
+  <li>minutes: <span id="minutes"> </p> </li>
+  <li>seconds: <span id="seconds"> </p> </li>
+  <li>msec: <span id="msec"> </p> </li>
+
    
 </ul>
 
+  <!--///////////////////////////////////////獲得GYRO data/////////////////////////////////////////////////////-->
+
 <script type="text/javascript">
- 
- 
 if (window.DeviceMotionEvent != undefined) {
    
     window.ondevicemotion = function(e) {
@@ -43,8 +52,54 @@ if (window.DeviceMotionEvent != undefined) {
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-<script>
+
+
+<!--///////////////////////////////////////獲得時間 data/////////////////////////////////////////////////////-->
+
+
+
+<script type="text/javascript">
+function showtime(){ 
+      time =new Date();
+
+      year=time.getFullYear();
+      month=time.getMonth();
+      date=time.getDate();
+      hours = time.getHours();
+      minutes = time.getMinutes();
+      seconds = time.getSeconds();
+      msec = time.getMilliseconds();
+
+      var time_array=[year,month,date,hours,minutes,seconds,msec];
+      
+      
+      document.getElementById("year").innerHTML = time_array[0];
+      document.getElementById("month").innerHTML = time_array[1];
+      document.getElementById("date").innerHTML = time_array[2];
+      document.getElementById("hours").innerHTML = time_array[3];
+      document.getElementById("minutes").innerHTML = time_array[4];
+      document.getElementById("seconds").innerHTML = time_array[5];
+      document.getElementById("msec").innerHTML = time_array[6];
+ 
+      
+      setTimeout("showtime()",1);
+  }
+
   
+
+      showtime();
+
+</script>
+
+
+
+
+
+<!--
+   回傳資料給伺服器 
+-->
+
+<script> 
  var socket = io();
  
  $(document).ready(function(){
@@ -61,7 +116,19 @@ if (window.DeviceMotionEvent != undefined) {
       var gamma = $("#gamma").text() ;
 
 
-      var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma} ;
+      var year  = $("#year").text() ; 
+      var month = $("#month").text() ;
+      var date = $("#date").text() ;
+
+      var hours = $("#hours").text() ;
+      var minutes = $("#minutes").text() ;
+      var seconds = $("#seconds").text() ;
+      var msec = $("#msec").text() ;
+
+
+     // var time = getMilliseconds();
+
+      var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma,year,month,date,hours,minutes,seconds,msec} ; 
 
       $("#accelerationX").ready(function(){
         socket.emit('device',obj);
@@ -69,6 +136,12 @@ if (window.DeviceMotionEvent != undefined) {
   },1)
  
 })
+
+
+
+
+
+
 </script>
 
 
