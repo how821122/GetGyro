@@ -7,9 +7,11 @@ Use nodejs + html to get Gyro
 
 2.   <pre>$ npm install</pre> 
 
-3.   <pre> $  node gyro.js</pre>
+3.   activate Mongodb
 
-4.  use a mobile device to connect to http://YOURIPADDRESS:3000
+4.   <pre> $  node gyro.js</pre>
+
+5.  use a mobile device to connect to http:// YOURIPADDRESS:3000
 
 
-And the the Gyro data will print in the cmd  
+And the the Gyro data will print on the cmd  
