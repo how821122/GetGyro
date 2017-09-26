@@ -12,13 +12,10 @@
 
   
 <ul>
-  <li>acceleration x: <span id="accelerationX"></span>g</li>
-  <li>acceleration y: <span id="accelerationY"></span>g</li>
-  <li>acceleration z: <span id="accelerationZ"></span>g</li>
-  <li>alpha: <span id="alpha"> </p> </li>
-  <li>beta:  <span id="beta">   </p> </li>
-  <li>gamma: <span id="gamma"> </p> </li>
-
+  <li>acceleration x: <span id="accelerationX"></span>g</li> <li>alpha: <span id="alpha">  </p> </li>
+  <li>acceleration y: <span id="accelerationY"></span>g</li> <li>beta:  <span id="beta">   </p> </li>
+  <li>acceleration z: <span id="accelerationZ"></span>g</li> <li>gamma: <span id="gamma">  </p> </li>
+  
   <li>year: <span id="year"> </p> </li>
   <li>month: <span id="month"> </p> </li>
   <li>date: <span id="date"> </p> </li>
@@ -26,7 +23,8 @@
   <li>minutes: <span id="minutes"> </p> </li>
   <li>seconds: <span id="seconds"> </p> </li>
   <li>msec: <span id="msec"> </p> </li>
-
+ 
+ 
    
 </ul>
 
@@ -80,8 +78,7 @@ function showtime(){
       document.getElementById("minutes").innerHTML = time_array[4];
       document.getElementById("seconds").innerHTML = time_array[5];
       document.getElementById("msec").innerHTML = time_array[6];
- 
-      
+
       setTimeout("showtime()",1);
   }
 
@@ -103,8 +100,9 @@ function showtime(){
  var socket = io();
  
  $(document).ready(function(){
-   
-   setInterval(function X(){
+
+
+      setInterval(function X(){
 
       var accelerationX = $("#accelerationX").text() ; 
       var accelerationY = $("#accelerationY").text() ;
@@ -130,17 +128,14 @@ function showtime(){
 
       var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma,year,month,date,hours,minutes,seconds,msec} ; 
 
+      
       $("#accelerationX").ready(function(){
         socket.emit('device',obj);
       });
   },1)
+
  
 })
-
-
-
-
-
 
 </script>
 
