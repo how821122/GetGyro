@@ -12,9 +12,10 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies":{
-    "socket.io":"2.0.3",
-    "express":"4.15.4"
+  "dependencies": {
+    "express": "4.15.4",
+    "mongodb": "^2.2.33",
+    "socket.io": "2.0.3"
   },
   "bugs": {
     "url": "https://github.com/how821122/GetGyro/issues"
