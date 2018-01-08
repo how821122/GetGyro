@@ -22,41 +22,44 @@ io.on('connection', function(socket){
     socket.on('device', function(obj){
 
   //build data
-     var total_data=[obj.accelerationX,obj.accelerationY,obj.accelerationZ,obj.alpha,obj.beta,obj.gamma,obj.year,obj.month,obj.date,obj.hours,obj.minutes,obj.seconds,obj.msec];
-     var jsonText = JSON.stringify(total_data,","," "); 
+     var time=(obj.minutes*100000)+ (obj.seconds*1000)+ obj.msec ;
+     var data=[obj.accelerationX,obj.accelerationY,obj.accelerationZ,obj.alpha,obj.beta,obj.gamma,obj.year,obj.month,obj.date,obj.hours,time];
+     
+
  
   //connect Mongodb    
     MongoClient.connect(url, function (err,db) { 
-    assert.equal(null, err); 
+      assert.equal(null, err); 
     console.log("Connected correctly to server"); 
     //create a collection
-    var data = db.collection("data_2"); //data、data_2
+    var gait = db.collection('gaitdata'); //data、data_2
     
-      var file ={
-          accelerationX:total_data[0],
-          accelerationY:total_data[1],
-          accelerationZ:total_data[2],
+      var file = {
+           accelerationX:data[0],
+           accelerationY:data[1],
+           accelerationZ:data[2],
 
-          alpha:total_data[3],
-          beta:total_data[4],
-          gamma:total_data[5],
+          alpha:data[3],
+          beta:data[4],
+          gamma:data[5],
 
 
-          year:total_data[6],
-          month:total_data[7],
-          date:total_data[8],
-          hours:total_data[9],
-          minutes:total_data[10],
-          seconds:total_data[11],
-          msec:total_data[12]
+          year:data[6],
+          month:data[7],
+          date:data[8],
+          hours:data[9],
+          sec:data[10]
+          
       };
+
    //insert file
-    data.insert(file, function (err, doc) { 
+    gait.insert(file, function (err, doc) { 
         if (err) { 
             db.close(); 
+            console.log("Error!!!");
             return console.error(err); 
         } 
-        console.log("資料已新增 : " + jsonText); 
+        console.log("資料已新增 : "+ file); 
     }); 
  
     });
@@ -66,7 +69,7 @@ io.on('connection', function(socket){
   });
   //disconnect
     socket.on('disconnect', function(){
-     console.log('Disconnected');
+      console.log('Disconnected');
   });
 });
 
