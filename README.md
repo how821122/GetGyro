@@ -7,7 +7,7 @@ Use nodejs + html to get Gyro
 
 2.   <pre>$ npm install</pre> 
 
-3.   activate Mongodb -- npm install mongodb 2.2.33
+3.   activate Mongodb --  <npm install mongodb 2.2.33>
 
 4.   <pre> $  node gyro.js</pre>
 
