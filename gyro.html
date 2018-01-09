@@ -125,15 +125,13 @@ function showtime(){
       var msec =  Number($("#msec").text()) ;
 
 
-     // var time = getMilliseconds();
-
       var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma,year,month,date,hours,minutes,seconds,msec} ; 
 
       
       $("#accelerationX").ready(function(){
         socket.emit('device',obj);
       });
-  },1)
+  },20)
 
  
 })
