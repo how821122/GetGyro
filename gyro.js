@@ -23,7 +23,7 @@ io.on('connection', function(socket){
   socket.on('device', function(obj){
 
   //build data
-     var time=(obj.minutes*100000)+ (obj.seconds*1000)+ obj.msec ;
+     var time=(obj.minutes*60000)+ (obj.seconds*1000)+ obj.msec ;
      var data=[obj.accelerationX,obj.accelerationY,obj.accelerationZ,obj.alpha,obj.beta,obj.gamma,obj.year,obj.month,obj.date,obj.hours,time];
 
      var file = {
