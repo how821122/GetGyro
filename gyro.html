@@ -138,5 +138,44 @@ function showtime(){
 </script>
 
 
+
+
+<!--
+
+  警報系統
+
+-->
+
+<li> req_meg: <span id="msg"> </p> </li>
+
+  <script>
+ 
+    setInterval(fall,1000);
+
+    function fall(){
+      
+      socket.on('message',function(msg){ 
+          var flag = msg.data;
+          document.getElementById("msg").innerHTML = flag; 
+/*
+          if(flag ==0){
+            alert("fall");
+          }
+          else{
+            console.log("safe");
+          }
+*/          
+      });
+    }
+      
+    
+
+  </script>
+
+
+
+
+
+ 
 </body>
 </html>
