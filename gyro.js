@@ -17,7 +17,6 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){ 
   console.log("Connecting.....");
-
 // use socket.io to get data from device
   socket.on('device', function(obj){
 
@@ -42,65 +41,45 @@ io.on('connection', function(socket){
            sec:data[10] 
       };
 
+
     MongoClient.connect(url, function(err, client) {
       assert.equal(null, err);
       //console.log("Connected successfully to server");
 
       const db = client.db(dbName);
       const col_input =  db.collection('gait');
-      const col_output =  db.collection('fall');
-
+/*insert data*/
       col_input.insert(file,function(err,result){
         assert.equal(err,null);
-        //console.log("data is inserting");
+        console.log("data is inserting");
       });
-
-
-       col_output.find({}).sort({_id:-1}).limit(1).toArray(function(err, results){ 
-        var sortdata = results[0].x;
-          console.log(sortdata);
-          socket.emit('message',{'data':sortdata});
-       });
  
-
-
     });
 
  });
  
-/*alert system*/
 
-/*
+//alert system
+ socket.on('result', function(){
+
+  setInterval(function(){
+    
     MongoClient.connect(url, function(err, client) {
       assert.equal(null, err);
       //console.log("Connected successfully to server");
-
       const db = client.db(dbName);
+      const col_output =  db.collection('fall');
 
-      setInterval(function(){
-        checkEvent(db,loop)
-      },1000); //per 1s get the event result 
-    });
-
-    const checkEvent =  function(db,callback){
-      const collection = db.collection('fall');
-            
-      collection.find({}).sort({_id:-1}).limit(1).toArray(function(err, results){ 
-        var sortdata = results[0].x;
-        callback(sortdata);
+      col_output.find({}).sort({_id:-1}).limit(1).toArray(function(err, results){ 
+         
+         var sortdata = results[0].x; //the flag name is x
+          //console.log(sortdata);
+         socket.emit('message',{'data':sortdata});
        });
-    }
-    const loop = function(event){
-        socket.emit('message',{'data':event});
-        console.log(event);
-    }
+    });
+  },1000);//per 1s
 });
- 
-*/
- 
-
 //------------------------------------------------------------
-
   //disconnect
     socket.on('disconnect', function(){
       console.log('Disconnected');
