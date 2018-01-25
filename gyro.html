@@ -12,6 +12,12 @@
 
   
 <ul>
+ 
+  Name: <input type="text" id="user" value="default"> 
+  <button id="Btn">Submit</button>
+  <li>User name: <span id="CollectionName">default</span> </p> </li>
+ 
+
   <li>acceleration x: <span id="accelerationX"></span>g</li> <li>alpha: <span id="alpha">  </p> </li>
   <li>acceleration y: <span id="accelerationY"></span>g</li> <li>beta:  <span id="beta">   </p> </li>
   <li>acceleration z: <span id="accelerationZ"></span>g</li> <li>gamma: <span id="gamma">  </p> </li>
@@ -24,27 +30,54 @@
   <li>seconds: <span id="seconds"> </p> </li>
   <li>msec: <span id="msec"> </p> </li>
  
- 
-   
 </ul>
 
-  <!--///////////////////////////////////////獲得GYRO data/////////////////////////////////////////////////////-->
+
+
+<!--
+   使用者名稱(選擇資料庫)
+-->
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+ $(document).ready(function(){
+    $("#Btn").click(function(){
+      document.getElementById("CollectionName").innerHTML = $("#user").val();
+    })
+ }) 
+</script>
+
+
+<!--
+  開始鍵
+-->
+
+
+<!--
+  獲得GYRO data
+-->
 
 <script type="text/javascript">
-if (window.DeviceMotionEvent != undefined) {
-   
-    window.ondevicemotion = function(e) {
-    document.getElementById("accelerationX").innerHTML = Math.round(e.accelerationIncludingGravity.x);
-    document.getElementById("accelerationY").innerHTML = Math.round(e.accelerationIncludingGravity.y);
-    document.getElementById("accelerationZ").innerHTML = Math.round(e.accelerationIncludingGravity.z);
-  }
-  
-   window.ondeviceorientation = function(event) {
-          document.getElementById("alpha").innerHTML = Math.round(event.alpha);
-          document.getElementById("beta").innerHTML = Math.round(event.beta);
-          document.getElementById("gamma").innerHTML = Math.round(event.gamma);
-        }       
-} 
+
+function GyroData(){
+
+    if (window.DeviceMotionEvent != undefined) {
+
+      window.ondevicemotion = function(e) {
+        document.getElementById("accelerationX").innerHTML = Math.round(e.accelerationIncludingGravity.x);
+        document.getElementById("accelerationY").innerHTML = Math.round(e.accelerationIncludingGravity.y);
+        document.getElementById("accelerationZ").innerHTML = Math.round(e.accelerationIncludingGravity.z);
+      }
+    
+      window.ondeviceorientation = function(event) {
+            document.getElementById("alpha").innerHTML = Math.round(event.alpha);
+            document.getElementById("beta").innerHTML = Math.round(event.beta);
+            document.getElementById("gamma").innerHTML = Math.round(event.gamma);
+      }       
+    } 
+}
+
+//GyroData();
 
 </script>
 
@@ -52,8 +85,9 @@ if (window.DeviceMotionEvent != undefined) {
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
 
-<!--///////////////////////////////////////獲得時間 data/////////////////////////////////////////////////////-->
-
+<!--
+  獲得時間 data
+-->
 
 
 <script type="text/javascript">
@@ -85,12 +119,9 @@ function showtime(){
       
       setTimeout("showtime()",1);
   }
-  
-      showtime();
+      
+//showtime();
 </script>
-
-
-
 
 
 <!--
@@ -100,86 +131,115 @@ function showtime(){
 <script> 
  var socket = io();
  
- $(document).ready(function(){
+ function R_data(){
+
+      $(document).ready(function(){
 
 
-      setInterval(function X(){
+        setInterval(function X(){
 
-      var accelerationX = Number($("#accelerationX").text()); 
-      var accelerationY = Number($("#accelerationY").text());
-      var accelerationZ = Number($("#accelerationZ").text());
-
-
-      var alpha = Number($("#alpha").text()); 
-      var beta  = Number($("#beta").text());
-      var gamma = Number($("#gamma").text());
+        var accelerationX = Number($("#accelerationX").text()); 
+        var accelerationY = Number($("#accelerationY").text());
+        var accelerationZ = Number($("#accelerationZ").text());
 
 
-      var year  = Number($("#year").text()) ; 
-      var month = Number($("#month").text()) ;
-      var date  = Number($("#date").text()) ;
-
-      var hours = Number($("#hours").text()) ;
-      var minutes = Number($("#minutes").text()) ;
-      var seconds = Number($("#seconds").text()) ;
-      var msec =  Number($("#msec").text()) ;
+        var alpha = Number($("#alpha").text()); 
+        var beta  = Number($("#beta").text());
+        var gamma = Number($("#gamma").text());
 
 
-      var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma,year,month,date,hours,minutes,seconds,msec} ; 
+        var year  = Number($("#year").text()) ; 
+        var month = Number($("#month").text()) ;
+        var date  = Number($("#date").text()) ;
 
-      
-      $("#accelerationX").ready(function(){
-        socket.emit('device',obj);
-      });
-  },20)// per 20ms return a data (50Hz)
+        var hours = Number($("#hours").text()) ;
+        var minutes = Number($("#minutes").text()) ;
+        var seconds = Number($("#seconds").text()) ;
+        var msec =  Number($("#msec").text()) ;
 
-})
+        var CollectionName = $("#CollectionName").text();
+
+    
+
+        var obj = {accelerationX,accelerationY,accelerationZ,alpha,beta,gamma,year,month,date,hours,minutes,seconds,msec,CollectionName} ; 
+
+        
+        $("#accelerationX").ready(function(){
+          socket.emit('device',obj);
+        });
+    },20)// per 20ms return a data (50Hz)
+  })
+}
+
+//R_data();
 
 </script>
 
 
 <!--
-  警報系統
+  警報系統 req_meg = 確認狀態的flag
 -->
 
 <li> req_meg: <span id="msg"> </p> </li>
 
 
 <script>
-//prepare alert data 
-  setTimeout(function(){
-    $("#msg").ready(function(){
-      socket.emit('result');
-    });
-  },1000);
 
-//delay 1s and get result of event
-  setTimeout(function(){
-    setInterval(fall,1000); 
-  },1000);
-    
-//receive function
-    function fall(){      
-      socket.on('message',function(msg){ 
-          var flag = msg.data;
-          document.getElementById("msg").innerHTML = flag; 
-      });
-    }
 
-  setTimeout(function(){
-    setInterval(function(){
-      var signal = Number($("#msg").text());
-      if(signal ==0){
-          alert("error");
-      }
-      else{
-          alert("safe");
-      }
-    },3000);
-  },10000);
+function alert_sys(){
+      //prepare alert data 
+        
+      var CollectionName = $("#CollectionName").text();
+
+        setTimeout(function(){
+          $("#msg").ready(function(){
+            socket.emit('result',CollectionName);
+          });
+        },1000);
+
+      //delay 1s and get result of event
+        setTimeout(function(){
+          setInterval(fall,1000); 
+        },1000);
+          
+      //receive function
+        function fall(){      
+            socket.on('message',function(msg){ 
+                var flag = msg.data;
+                document.getElementById("msg").innerHTML = flag; 
+            });
+        }
+        setTimeout(function(){
+          setInterval(function(){
+            var signal = Number($("#msg").text());
+            if(signal ==0){
+                alert("error");
+            }
+            else{
+                alert("safe");
+            }
+          },3000);
+        },10000);
+}
+
+//alert_sys();
+
   
 </script>
  
+
+<button onclick="Start()">Start</button>
+
+ <script>
+    function Start() {
+     
+      GyroData();
+      showtime();
+      R_data();
+      alert_sys();
+    } 
+ </script>
+
 
 
  
