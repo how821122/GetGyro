@@ -15,16 +15,16 @@ app.get('/', function(req, res){
 });
 
 
-
-
 io.on('connection', function(socket){ 
   console.log("Connecting.....");
 // use socket.io to get data from device
   socket.on('device', function(obj){
 
   //build data
-     var time=(obj.minutes*60000)+ (obj.seconds*1000)+ obj.msec ;
-     var data=[ obj.accelerationX,obj.accelerationY,obj.accelerationZ,obj.alpha,obj.beta,obj.gamma,obj.year,obj.month,obj.date,obj.hours,obj.minutes,obj.sec,obj.msec,obj.CollectionName];
+     var time_series=(obj.minutes*60000)+ (obj.sec*1000)+ obj.msec;
+     console.log(time_series);
+   
+     var data=[ obj.accelerationX,obj.accelerationY,obj.accelerationZ,obj.alpha,obj.beta,obj.gamma,obj.year,obj.month,obj.date,obj.hours,obj.minutes,obj.sec,obj.msec,time_series,obj.CollectionName];
 
      var file = {
            accelerationX:data[0],
@@ -43,7 +43,8 @@ io.on('connection', function(socket){
            minutes:data[10],
            sec:data[11],
            msec:data[12],
-           CollectionName:data[13]
+           time_series:data[13],
+           CollectionName:data[14]
       };
 //use the Mongodb
 
@@ -53,7 +54,7 @@ io.on('connection', function(socket){
 
       const db = client.db(dbName);
 
-      var inp_colName = "Gait_"+data[13];//-----------------------------------------------------------------------------------------
+      var inp_colName = "Gait_"+data[14];//Name of Gait collection 
 
       const col_input =  db.collection(inp_colName);
 //insert data
@@ -79,7 +80,7 @@ io.on('connection', function(socket){
       //console.log("Connected successfully to server");
       const db = client.db(dbName);
 
-      var otp_colName = "Fall_"+CollectionName;//-----------------------------------------------------------------------------------------
+      var otp_colName = "Fall_"+CollectionName;//name of Fall collection 
 
       const col_output =  db.collection(otp_colName);
 
