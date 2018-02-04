@@ -101,7 +101,7 @@ function GyroData(){
     } 
 }
 
-//GyroData();
+
 
 </script>
 
@@ -189,7 +189,7 @@ function showtime(){
         $("#accelerationX").ready(function(){
           socket.emit('device',obj);
         });
-    },20)// per 20ms return a data (50Hz)
+    },20)// per 40ms return a data (25Hz)
   })
 }
 
@@ -230,10 +230,10 @@ function alert_sys(){
           setInterval(function(){
             var signal = Number($("#msg").text());
             if(signal ==0){
-                alert("error");
+                alert("ERRclor");
             }
             else{
-                alert("safe");
+                //alert("safe");
             }
           },3000);
         },10000);
@@ -248,15 +248,17 @@ function alert_sys(){
 
  <script>
     function Start() {
-     
+
       GyroData();   //1.獲取Gyro
       showtime();   //2.獲得時間
       R_data();     //3.傳送Gyro、時間數據
-      alert_sys();  //4.警報系統
+     // alert_sys();  //4.警報系統
+
     } 
+
+
  </script>
  
-
 
 
 

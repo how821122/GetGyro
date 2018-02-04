@@ -7,7 +7,6 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
  
 const url = 'mongodb://localhost:27017';
-const dbName = 'test';
 
 
 app.get('/', function(req, res){
@@ -18,12 +17,11 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){ 
   console.log("Connecting.....");
 // use socket.io to get data from device
+ 
   socket.on('device', function(obj){
 
   //build data
      var time_series=(obj.minutes*60000)+ (obj.sec*1000)+ obj.msec;
-     console.log(time_series);
-   
      var data=[ obj.accelerationX,obj.accelerationY,obj.accelerationZ,obj.alpha,obj.beta,obj.gamma,obj.year,obj.month,obj.date,obj.hours,obj.minutes,obj.sec,obj.msec,time_series,obj.CollectionName];
 
      var file = {
@@ -46,13 +44,13 @@ io.on('connection', function(socket){
            time_series:data[13],
            CollectionName:data[14]
       };
-//use the Mongodb
-
+//use the Mongodb------------------------------------------------------------------
+    
     MongoClient.connect(url, function(err, client) {
       assert.equal(null, err);
       //console.log("Connected successfully to server");
 
-      const db = client.db(dbName);
+      const db = client.db('Gait');
 
       var inp_colName = "Gait_"+data[14];//Name of Gait collection 
 
@@ -62,11 +60,14 @@ io.on('connection', function(socket){
         assert.equal(err,null);
         console.log("data is inserting");
         client.close();
-      });
+        });
  
     });
 
  });
+ 
+
+  
  
 
 //alert system
@@ -78,23 +79,21 @@ io.on('connection', function(socket){
     MongoClient.connect(url, function(err, client) {
       assert.equal(null, err);
       //console.log("Connected successfully to server");
-      const db = client.db(dbName);
+      const db = client.db('Fall');
 
       var otp_colName = "Fall_"+CollectionName;//name of Fall collection 
 
       const col_output =  db.collection(otp_colName);
 
-      col_output.find({}).sort({_id:-1}).limit(1).toArray(function(err, results){ 
+      col_output.find({}).sort({_id:-1}).limit(1).toArray(function(err, results){ // get the data from the last one
          
-         var sortdata = results[0].flag; //the flag name is flag
-          //console.log(sortdata);
+         var sortdata = results[0].flag; //alert's name  is flag
          socket.emit('message',{'data':sortdata});
          client.close();
        });
     });
   },1000);//per 1s
 });
-
 //------------------------------------------------------------
   //disconnect
   socket.on('disconnect', function(){
