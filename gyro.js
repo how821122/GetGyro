@@ -67,9 +67,6 @@ io.on('connection', function(socket){
  });
  
 
-  
- 
-
 //alert system
 
  socket.on('result', function(CollectionName){

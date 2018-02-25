@@ -21,14 +21,27 @@
 </div>
 
 
-
 <div>
   
     <h4 align="center" valign="left">User name: <span id="CollectionName">Default</span> </h4><br/>
     Name:     <input type="text" id="user" value="Default" style="font-size:20px" size="14">
-    <div align="right" valign="left"><button id="Btn" style="background-color:DeepSkyBlue;font-size:20px;width:100px;height:40px;" >Submit</button> </div>
-    
+<br/>
+<br/>
 
+
+<div align="center" valign="center" style="font-size:20px">
+  <select id="test_time">
+    <option value="_first">第一次</option>
+    <option value="_seconds">第二次</option>
+    <option value="_third">第三次</option>
+    <option value="_fourth">第四次</option>
+    <option value="_fifth">第五次</option>
+  </select>
+</div>
+
+  <div align="right" valign="left"><button id="Btn" style="background-color:DeepSkyBlue;font-size:20px;width:100px;height:40px;">Submit</button> </div>
+    
+ 
 </div>
 <br/>
 
@@ -40,8 +53,6 @@
   <span id="msec"></span>
 </div>
  
-
-  
 
  <table class="table" style="background-color:Aquamarine;" >
   
@@ -59,8 +70,12 @@
  </table>
 
 <li> req_meg: <span id="msg">FLAG</span> </li><br/>
+<div align="center" valign="center"><button id="start" onclick="Start()" style="background-color:CornflowerBlue ;font-size:20px;width:300px;height:40px;">Start</button></div>
 
-<div align="center" valign="center"><button onclick="Start()" style="background-color:CornflowerBlue ;font-size:30px;width:300px;height:80px;">Start</button></div>  
+<div align="center" valign="center"><button id="stop" onclick="reloadPage()" style="background-color:red ;font-size:20px;width:300px;height:40px;">Stop</button></div> 
+
+
+ 
 
 <!--
    使用者名稱(選擇資料庫)
@@ -70,10 +85,11 @@
 <script>
  $(document).ready(function(){
     $("#Btn").click(function(){
-      document.getElementById("CollectionName").innerHTML = $("#user").val();
+      document.getElementById("CollectionName").innerHTML = $("#user").val() + $("#test_time").val();
     })
  }) 
 </script>
+
 
 
 
@@ -230,7 +246,7 @@ function alert_sys(){
           setInterval(function(){
             var signal = Number($("#msg").text());
             if(signal ==0){
-                alert("ERRclor");
+                alert("ERRor");
             }
             else{
                 //alert("safe");
@@ -248,16 +264,25 @@ function alert_sys(){
 
  <script>
     function Start() {
-
+      $("#start").hide();
       GyroData();   //1.獲取Gyro
       showtime();   //2.獲得時間
       R_data();     //3.傳送Gyro、時間數據
      // alert_sys();  //4.警報系統
-
     } 
-
-
  </script>
+
+
+ <!--
+  重新載入
+-->
+<script type="text/javascript">
+function reloadPage()
+  {
+    window.location.reload()
+  }
+</script>
+
  
 
 
